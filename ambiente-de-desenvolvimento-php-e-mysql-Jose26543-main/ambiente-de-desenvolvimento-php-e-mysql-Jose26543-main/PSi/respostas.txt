@@ -1,0 +1,62 @@
+1. Obter uma listagem dos clientes que moram em Lisboa ou
+Braga.
+
+SELECT * FROM `clientes` WHERE morada = 'Lisboa' or 'Braga';
+
+2. Alterar o nome da cliente 3 para Anabela.
+
+UPDATE clientes SET Cliente = 'Anabela' WHERE CodCli = 3;
+
+3.Inserir o cliente Paulo que mora em Braga com o código 5
+
+INSERT INTO clientes (Cliente, Morada, CodCli) VALUES ('Paulo', 'Braga', 5);
+
+4.Saber quantas reparações estão registadas no veículo 87-33-
+VT.
+
+SELECT COUNT(*) AS NumRep FROM reparacoes WHERE Matricula = '87-33-VT';
+
+5.Obter uma lista de matriculas dos veículos cujos proprietários
+moram no Porto.
+
+SELECT matricula FROM veiculos JOIN clientes ON cliente = cliente WHERE morada LIKE '%Porto%';
+
+6.Obter uma listagem com todos as peças cujo código começa
+pela letra F.
+
+SELECT * FROM pecas WHERE CodPeca LIKE 'F%';
+
+7.Obter uma listagem com todas as peças que não têm a
+palavra Travão no nome
+
+SELECT * FROM pecas WHERE Peca NOT LIKE '%Travão%';
+
+8. Obter o preço médio das peças.
+
+SELECT AVG(preco) preco FROM pecas;
+
+9.Obter uma listagem de moradas e o número de clientes em
+cada morada.
+
+SELECT morada, COUNT(*) AS clientes FROM clientes GROUP BY morada;
+
+10.Obter uma listagem dos veículos e respetivas marcas.
+
+SELECT matricula, CodMarca FROM veiculos v;
+
+11.Obter uma listagem de clientes com o nome, morada e matricula dos veículos que são proprietários. Os clientes sem veículos também devem aparecer.
+
+SELECT c.Cliente, c.Morada, v.Matricula FROM clientes c LEFT JOIN veiculos v ON c.CodCli = v.CodCli;
+
+12.Obter o código, nome e preço da peça mais barata (pode ser mais do que uma).
+
+SELECT CodPeca, Peca, Preco FROM pecas WHERE Preco = (SELECT MIN(Preco) FROM pecas);
+
+13.Obter uma listagem de peças com o código, nome e a quantidade total utilizada em reparações.
+
+SELECT p.CodPeca, p.Peca, SUM(rp.Qtd) AS QuantidadeTotal FROM pecas p JOIN reppecas rp ON p.CodPeca = rp.CodPeca GROUP BY p.CodPeca, p.Peca;
+
+14.Obter uma lista com o número de reparação e o respetivo
+valor total a pagar por cada reparação.
+
+SELECT r.NumRep, SUM(p.Preco * rp.Qtd) AS ValorTotal FROM reparacoes r JOIN reppecas rp ON r.NumRep = rp.NumRep JOIN pecas p ON rp.CodPeca = p.CodPeca GROUP BY r.NumRep;
